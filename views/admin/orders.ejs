@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Orders</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>All Orders</h1>
+
+<% orders.forEach(order => { %>
+
+<div>
+    <p>Table: <%= order.tableNo %></p>
+<p>Total: ₹<%= order.totalAmount %></p>
+<p>Status: <%= order.status %></p>
+
+    <a href="/update-status/<%= order._id %>/Preparing">
+    <button>Preparing</button>
+</a>
+
+<a href="/update-status/<%= order._id %>/Ready">
+    <button>Ready</button>
+</a>
+
+<a href="/update-status/<%= order._id %>/Served">
+    <button>Served</button>
+</a>
+
+    <hr>
+</div>
+
+<% }) %>
+
+</body>
+</html>

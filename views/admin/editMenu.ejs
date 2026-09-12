@@ -1,0 +1,27 @@
+<h1>Edit Menu Item</h1>
+
+<form action="/admin/edit-menu/<%= item._id %>" method="POST">
+
+    <input
+        type="text"
+        name="name"
+        value="<%= item.name %>"
+    >
+
+    <input
+        type="number"
+        name="price"
+        value="<%= item.price %>"
+    >
+
+    <input
+        type="text"
+        name="category"
+        value="<%= item.category %>"
+    >
+
+    <button type="submit">
+        Update
+    </button>
+
+</form>

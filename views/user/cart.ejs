@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Your Cart</h1>
+
+<% cart.forEach(item => { %>
+
+<p>
+    <%= item.name %> - ₹<%= item.price %>
+</p>
+
+<% }) %>
+
+<hr>
+
+<h2>Total: ₹<%= total %></h2>
+
+<a href="/place-order">
+    <button>Place Order</button>
+</a>
+
+</body>
+</html>

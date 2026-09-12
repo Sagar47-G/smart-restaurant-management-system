@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Order</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Track Your Order</h1>
+
+<p>Order ID: <%= order._id %></p>
+
+<% if(order.status === "Received") { %>
+    <h2 style="color:orange;">🟡 Received</h2>
+<% } %>
+
+<% if(order.status === "Preparing") { %>
+    <h2 style="color:blue;">🟠 Preparing</h2>
+<% } %>
+
+<% if(order.status === "Ready") { %>
+    <h2 style="color:green;">🟢 Ready</h2>
+<% } %>
+
+<% if(order.status === "Served") { %>
+    <h2 style="color:purple;">✅ Served</h2>
+<% } %>
+
+</body>
+</html>

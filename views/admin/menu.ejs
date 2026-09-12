@@ -1,0 +1,26 @@
+<h1>Menu Items</h1>
+
+<a href="/admin/add-menu">
+    Add New Food
+</a>
+
+<hr>
+
+<% items.forEach(item => { %>
+
+    <h3><%= item.name %></h3>
+
+    <p>₹<%= item.price %></p>
+
+    <p><%= item.category %></p>
+
+    <hr>
+    <a href="/admin/edit-menu/<%= item._id %>">
+    <button>Edit</button>
+</a>
+
+<a href="/admin/delete-menu/<%= item._id %>">
+    <button>Delete</button>
+</a>
+</a>
+<% }) %>
