@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-    tableNo: Number,
+    tableNo: String,
 
-    items: Array,
+    items: [
+        {
+            name: String,
+            price: Number
+        }
+    ],
 
     totalAmount: Number,
 
@@ -11,8 +16,6 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "Received"
     }
-}, {
-    timestamps: true
 });
 
 module.exports = mongoose.model("Order", orderSchema);

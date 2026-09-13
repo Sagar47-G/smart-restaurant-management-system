@@ -112,3 +112,21 @@ button:hover{
     background:#222;
     color:white;
 }
+@media (max-width: 768px) {
+
+    .menu-container{
+        grid-template-columns: 1fr;
+    }
+
+    .menu-card{
+        width:100%;
+    }
+
+    button{
+        width:100%;
+    }
+
+    h1{
+        font-size:28px;
+    }
+}

@@ -1,41 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Orders</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>All Orders</title>
+
+    <style>
+        .table-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+}
+
+.table-card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.2);
+    text-align:center;
+}
+    </style>
 </head>
 <body>
+<h1>Restaurant Tables</h1>
 
-<h1>All Orders</h1>
+<div class="table-grid">
 
 <% orders.forEach(order => { %>
 
-<div>
-    <p>Table: <%= order.tableNo %></p>
-<p>Total: ₹<%= order.totalAmount %></p>
-<p>Status: <%= order.status %></p>
+    <div class="table-card">
+        <h2>Table <%= order.tableNo %></h2>
 
-    <a href="/update-status/<%= order._id %>/Preparing">
-    <button>Preparing</button>
-</a>
+        <p>
+            <strong>Items:</strong><br>
+            <%= order.items.map(item => item.name).join(", ") %>
+        </p>
 
-<a href="/update-status/<%= order._id %>/Ready">
-    <button>Ready</button>
-</a>
+        <p>
+            <strong>Total:</strong>
+            ₹<%= order.totalAmount %>
+        </p>
 
-<a href="/update-status/<%= order._id %>/Served">
-    <button>Served</button>
-</a>
+        <p>
+            <strong>Status:</strong>
+            <%= order.status %>
+        </p>
 
-    <hr>
+        <a class="btn preparing"
+           href="/admin/order/<%= order._id %>/Preparing">
+           Preparing
+        </a>
 
-    
-</div>
+        <a class="btn ready"
+           href="/admin/order/<%= order._id %>/Ready">
+           Ready
+        </a>
+
+        <a class="btn served"
+           href="/admin/order/<%= order._id %>/Served">
+           Served
+        </a>
+
+    </div>
 
 <% }) %>
-<a href="/admin/logout">
-    <button>Logout</button>
-</a>
+
+</div>
 
 </body>
 </html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+
+    <style>
+        body{
+            font-family:Arial;
+            background:#f4f4f4;
+            text-align:center;
+        }
+
+        h1{
+            margin-top:30px;
+        }
+
+        .container{
+            display:grid;
+            grid-template-columns:repeat(3,250px);
+            gap:20px;
+            justify-content:center;
+            margin-top:40px;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn{
+            display:block;
+            background:#ff6b35;
+            color:white;
+            padding:12px;
+            text-decoration:none;
+            border-radius:8px;
+            margin-top:10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🍽 Restaurant Admin Panel</h1>
+
+<div class="container">
+
+    <div class="card">
+        <h2>📊 Dashboard</h2>
+        <a class="btn" href="/admin/dashboard">
+            Open
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>📦 Orders</h2>
+        <a class="btn" href="/admin/orders">
+            Manage Orders
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>🍔 Menu</h2>
+        <a class="btn" href="/admin/menu">
+            Manage Menu
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>⭐ Feedback</h2>
+        <a class="btn" href="/admin/feedbacks">
+            View Feedback
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>📱 QR Codes</h2>
+        <a class="btn" href="/admin/generate-qr/1">
+            Generate QR
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>🚪 Logout</h2>
+        <a class="btn" href="/admin/logout">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

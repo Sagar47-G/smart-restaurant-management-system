@@ -9,6 +9,7 @@ const MenuItem = require("./models/menuitem");
 const QRCode = require("qrcode");
 const session = require("express-session");
 const Feedback = require("./models/feedback");
+const User = require("./models/User");
 connectDB();
 
 app.use(express.static("public"));
@@ -29,10 +30,16 @@ app.use("/", orderRoutes);
 let cart = [];
 
 let currentTableNo = null;
+
+app.get("/admin", isAdmin, (req, res) => {
+    res.render("admin/home");
+});
 app.get("/", (req, res) => {
     res.render("home");
 });
-
+app.get("/", (req, res) => {
+    res.render("home");
+});
 app.get("/cart", (req, res) => {
 
     const total = cart.reduce(
@@ -63,7 +70,7 @@ app.get("/admin/order/:id/:status", isAdmin, async (req, res) => {
     res.redirect("/admin/orders");
 });
 
-app.get("/track/:id", async (req, res) => {
+app.get("/track-order/:id", async (req, res) => {
 
     const order = await Order.findById(req.params.id);
 
@@ -71,10 +78,11 @@ app.get("/track/:id", async (req, res) => {
         return res.send("Order not found");
     }
 
-    res.render("user/trackOrder", { order });
+    res.render("user/trackOrder", {
+        order
+    });
 
 });
-
 app.get("/admin/add-menu", (req, res) => {
     res.render("admin/addMenu");
 });
@@ -128,9 +136,11 @@ app.get("/admin/generate-qr/:tableNo", async (req, res) => {
 
     const tableNo = req.params.tableNo;
 
-    const url = `http://localhost:3000/menu?table=${tableNo}`;
+    const qrUrl =
+        `http://localhost:3000/menu?table=${tableNo}`;
 
-    const qrImage = await QRCode.toDataURL(url);
+    const qrImage =
+        await QRCode.toDataURL(qrUrl);
 
     res.render("admin/qr", {
         qrImage,
@@ -139,7 +149,10 @@ app.get("/admin/generate-qr/:tableNo", async (req, res) => {
 });
 
 app.get("/menu", async (req, res) => {
+
     const tableNo = req.query.table;
+
+    req.session.tableNo = tableNo;
 
     const menuItems = await MenuItem.find();
 
@@ -148,6 +161,7 @@ app.get("/menu", async (req, res) => {
         menuItems
     });
 });
+
 
 app.get("/add-to-cart/:name/:price", (req, res) => {
 
@@ -158,6 +172,18 @@ app.get("/add-to-cart/:name/:price", (req, res) => {
 
     res.redirect("/cart");
 });
+app.get("/cart", (req, res) => {
+
+    const total = cart.reduce(
+        (sum, item) => sum + item.price,
+        0
+    );
+
+    res.render("user/cart", {
+        cart,
+        total
+    });
+});
 app.get("/place-order", async (req, res) => {
 
     const total = cart.reduce(
@@ -166,33 +192,50 @@ app.get("/place-order", async (req, res) => {
     );
 
     const order = await Order.create({
-    tableNo: currentTableNo,
-    items: cart,
-    totalAmount: total,
-    status: "Received"
-});
+        tableNo: req.session.tableNo,
+        items: cart,
+        totalAmount: total,
+        status: "Received"
+    });
 
     cart = [];
 
-    res.redirect(`/track/${order._id}`);
+    res.redirect(`/track-order/${order._id}`);
 });
+app.post("/place-order", async (req, res) => {
+    try {
+        const cart = req.session.cart || [];
+        const tableNo = req.session.tableNo;
 
-app.get("/admin/dashboard", async (req, res) => {
+        if (cart.length === 0) {
+            return res.send("Cart is empty");
+        }
 
-    const orders = await Order.find();
+        const totalAmount = cart.reduce((sum, item) => {
+            return sum + (item.price * item.quantity);
+        }, 0);
 
-    const totalRevenue = orders.reduce(
-        (sum, order) => sum + order.totalAmount,
-        0
-    );
+        const order = new Order({
+            tableNo: tableNo,
+            items: cart.map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            })),
+            totalAmount: totalAmount,
+            status: "Received"
+        });
 
-    const totalOrders = orders.length;
+        await order.save();
 
-    res.render("admin/dashboard", {
-        totalRevenue,
-        totalOrders
-    });
+        req.session.cart = [];
 
+        res.redirect("/bill/" + order._id);
+
+    } catch (err) {
+        console.log(err);
+        res.send("Order Failed");
+    }
 });
 app.get("/admin/dashboard", async (req, res) => {
 
@@ -280,7 +323,7 @@ app.post("/admin/login", async (req, res) => {
     }
 
     req.session.adminId = admin._id;
-    res.redirect("/admin/orders");
+res.redirect("/admin");
 });
 
 // Middleware function
@@ -321,9 +364,73 @@ app.get("/admin/feedbacks", isAdmin, async (req, res) => {
     });
 
 });
+app.get("/tables", (req, res) => {
+    res.render("tables");
+});
+
+app.get("/register", (req, res) => {
+    res.render("user/register");
+});
+
+app.post("/register", async (req, res) => {
+
+    const hashedPassword =
+        await bcrypt.hash(req.body.password, 10);
+
+    await User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword
+    });
+
+    res.redirect("/login");
+});
+app.get("/login", (req, res) => {
+    res.render("user/login");
+});
+
+app.post("/login", async (req, res) => {
+
+    const user = await User.findOne({
+        email: req.body.email
+    });
+
+    if (!user) {
+        return res.send("User Not Found");
+    }
+
+    const match = await bcrypt.compare(
+        req.body.password,
+        user.password
+    );
+
+    if (!match) {
+        return res.send("Wrong Password");
+    }
+
+    req.session.userId = user._id;
+
+    res.redirect("/tables");
+});
+app.get("/logout", (req, res) => {
+
+    req.session.destroy(() => {
+        res.redirect("/login");
+    });
+
+});
+function isUser(req, res, next) {
+
+    if (!req.session.userId) {
+        return res.redirect("/login");
+    }
+
+    next();
+}
 const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
 
