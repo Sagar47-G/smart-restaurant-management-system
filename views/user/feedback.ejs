@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback</title>
+</head>
+<body>
+
+<h1>Rate Your Experience</h1>
+
+<form action="/feedback" method="POST">
+
+    <input type="number"
+           name="tableNo"
+           placeholder="Table Number"
+           required>
+
+    <br><br>
+
+    <input type="number"
+           name="rating"
+           min="1"
+           max="5"
+           placeholder="Rating (1-5)"
+           required>
+
+    <br><br>
+
+    <textarea
+        name="comment"
+        placeholder="Your feedback">
+    </textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Submit Feedback
+    </button>
+
+</form>
+
+</body>
+</html>

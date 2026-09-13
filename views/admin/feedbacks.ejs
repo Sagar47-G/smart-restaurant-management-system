@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Feedbacks</title>
+</head>
+<body>
+
+<h1>Customer Feedbacks</h1>
+
+<% feedbacks.forEach(feedback => { %>
+
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <p><b>Table:</b> <%= feedback.tableNo %></p>
+        <p><b>Rating:</b> ⭐ <%= feedback.rating %>/5</p>
+        <p><b>Comment:</b> <%= feedback.comment %></p>
+    </div>
+
+<% }) %>
+
+</body>
+</html>

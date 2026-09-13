@@ -1,34 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Restaurant Menu</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-
-
-
 <h1>Restaurant Menu</h1>
 
 <h2>Table: <%= tableNo %></h2>
 
-<div class="menu-container">
+<% menuItems.forEach(item => { %>
 
-<% items.forEach(item => { %>
-
-<div class="card">
+<div>
     <h3><%= item.name %></h3>
 
-    <p class="price">₹<%= item.price %></p>
+    <p>₹<%= item.price %></p>
 
     <a href="/add-to-cart/<%= item.name %>/<%= item.price %>">
         <button>Add to Cart</button>
     </a>
 </div>
 
+<hr>
+
 <% }) %>
 
-</div>
-
-</body>
-</html>
+<a href="/cart">
+    <button>View Cart</button>
+</a>

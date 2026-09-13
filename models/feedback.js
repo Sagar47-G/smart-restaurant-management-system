@@ -1,10 +1,9 @@
-// models/Feedback.js
 const mongoose = require("mongoose");
 
 const feedbackSchema = new mongoose.Schema({
-    customerName: String,
+    tableNo: Number,
     rating: Number,
     comment: String
 });
 
-module.exports = mongoose.model("feedback", feedbackSchema);
+module.exports = mongoose.model("Feedback", feedbackSchema);
