@@ -1,29 +1,124 @@
+<html>
+<head>
+    <title>Admin Menu</title>
+   <style>
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    color:#ff6b35;
+    margin-bottom:20px;
+}
+
+.add-btn{
+    display:inline-block;
+    background:#28a745;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.dashboard-btn{
+    display:inline-block;
+    background:#007bff;
+    color:white;
+    text-decoration:none;
+    padding:10px 15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.menu-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.menu-table th{
+    background:#ff6b35;
+    color:white;
+    padding:15px;
+}
+
+.menu-table td{
+    padding:15px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+button{
+    padding:8px 15px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+
+.edit-btn{
+    background:#007bff;
+}
+
+.delete-btn{
+    background:#dc3545;
+}
+
+button:hover{
+    opacity:0.9;
+}
+</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 <h1>Menu Items</h1>
 
-<a href="/admin/add-menu">
+<a href="/admin/dashboard" class="dashboard-btn">
+    📊 Dashboard
+</a>
+
+<a href="/admin/add-menu" class="add-btn">
     Add New Food
 </a>
 
-<hr>
+<table class="menu-table">
+
+<tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Category</th>
+    <th>Actions</th>
+</tr>
 
 <% items.forEach(item => { %>
 
-    <h3><%= item.name %></h3>
+<tr>
+    <td><%= item.name %></td>
+    <td>₹<%= item.price %></td>
+    <td><%= item.category %></td>
 
-    <p>₹<%= item.price %></p>
+    <td>
 
-    <p><%= item.category %></p>
+        <a href="/admin/edit-menu/<%= item._id %>">
+            <button class="edit-btn">Edit</button>
+        </a>
 
-    <hr>
+        <a href="/admin/delete-menu/<%= item._id %>">
+            <button class="delete-btn">Delete</button>
+        </a>
 
-    <a href="/admin/dashboard">📊 Dashboard</a>
-<br><br>
-    <a href="/admin/edit-menu/<%= item._id %>">
-    <button>Edit</button>
-</a>
+    </td>
+</tr>
 
-<a href="/admin/delete-menu/<%= item._id %>">
-    <button>Delete</button>
-</a>
-</a>
 <% }) %>
+
+</table>
+</body>
+</html>

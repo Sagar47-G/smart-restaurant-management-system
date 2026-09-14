@@ -2,19 +2,11 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
     tableNo: String,
-
-    items: [
-        {
-            name: String,
-            price: Number
-        }
-    ],
-
+    items: Array,
     totalAmount: Number,
-
     status: {
         type: String,
-        default: "Received"
+        default: 'Received'
     }
 });
 

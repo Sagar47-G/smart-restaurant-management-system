@@ -71,17 +71,11 @@ app.get("/admin/order/:id/:status", isAdmin, async (req, res) => {
 });
 
 app.get("/track-order/:id", async (req, res) => {
-
     const order = await Order.findById(req.params.id);
 
-    if (!order) {
-        return res.send("Order not found");
-    }
-
-    res.render("user/trackOrder", {
+    res.render('user/trackOrder', {
         order
     });
-
 });
 app.get("/admin/add-menu", (req, res) => {
     res.render("admin/addMenu");
@@ -200,7 +194,7 @@ app.get("/place-order", async (req, res) => {
 
     cart = [];
 
-    res.redirect(`/track-order/${order._id}`);
+    res.redirect("/track-order/" + order._id);
 });
 app.post("/place-order", async (req, res) => {
     try {
