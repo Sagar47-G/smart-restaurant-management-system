@@ -249,7 +249,7 @@ button:hover{
     }
 } */
 .menu-item {
-    background: white;
+    background: #5A331C;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 20px;
@@ -258,8 +258,8 @@ button:hover{
 }
 a{
     display:inline-block;
-    background:#ff6b35;
-    color:white;
+    background: #5A331C;
+    color:#E8DEC9;
     text-decoration:none;
     padding:12px 18px;
     border-radius:8px;
